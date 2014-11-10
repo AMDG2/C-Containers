@@ -6,29 +6,12 @@ CArray is a little library that helps you play with indexed array in C.
 Let me play !
 =============
 
-To create a new array you first need to create an array definition calling the MACRO `NEW_ARRAY_DEFINITION`
-This macro takes 3 parameters :
-
-1. Your array type name
-2. The type of the value of array elements
-3. The type of the index of array elements
-
-Then you need to implement your definitions using the `IMPLEMENT_ARRAY` macro.
-This macro takes a lot of parameters. The third first are the same as the definitions. Then you need to pass 6 pointer to functions :
-
-1. Function to copy a value, prototype: `void _copy(VALUETYPE * dest, VALUETYPE * src)`
-2. The same as 1. but for indexes
-3. Function to compare two values, prototype: `int _cmp(VALUETYPE val1, VALUETYPE val2)`
-4. The same as 3. but for indexes
-5. Function to free a value, prototype: `void _free(VALUETYPE value)`
-6. The same as 5. but for indexes
-
 Example
 -------
 
 ### header.h
 
-```
+```cpp
 #include "array.h"
 
 NEW_ARRAY_DEFINITION(IntArray, int, int);
@@ -36,7 +19,7 @@ NEW_ARRAY_DEFINITION(IntArray, int, int);
 
 ### main.c
 
-```
+```cpp
 #include "header.h"
 
 int main(int argc, char ** argv)
@@ -64,6 +47,26 @@ int main(int argc, char ** argv)
 	return 0;
 }
 ```
+
+Boring stuff (explications)
+---------------------------
+To create a new array you first need to create an array definition calling the MACRO `NEW_ARRAY_DEFINITION`
+This macro takes 3 parameters :
+
+1. Your array type name
+2. The type of the value of array elements
+3. The type of the index of array elements
+
+Then you need to implement your definitions using the `IMPLEMENT_ARRAY` macro.
+This macro takes a lot of parameters. The third first are the same as the definitions. Then you need to pass 6 pointer to functions :
+
+1. Function to copy a value, prototype: `void _copy(VALUETYPE * dest, VALUETYPE * src)`
+2. The same as 1. but for indexes
+3. Function to compare two values, prototype: `int _cmp(VALUETYPE val1, VALUETYPE val2)`
+4. The same as 3. but for indexes
+5. Function to free a value, prototype: `void _free(VALUETYPE value)`
+6. The same as 5. but for indexes
+
 License
 =======
 This library is under GPLv3+ license.
