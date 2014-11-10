@@ -22,6 +22,8 @@ NEW_ARRAY_DEFINITION(IntArray, int, int);
 ```C
 #include "header.h"
 
+IMPLEMENT_ARRAY(IntArray, int, int, Int_copy, Int_copy, Int_cmp, Int_cmp, Int_free, Int_free);
+
 int main(int argc, char ** argv)
 {
 	IntArray * array = IntArray_new();
