@@ -1,7 +1,7 @@
-CArray
-======
+C-Containers
+============
 
-CArray is a little library that helps you play with indexed array in C.
+C-Containers is a little library that helps you play with containers in C.
 
 Let me play !
 =============
@@ -12,9 +12,9 @@ Example
 ### header.h
 
 ```C
-#include "array.h"
+#include "list.h"
 
-NEW_ARRAY_DEFINITION(IntArray, int, int);
+NEW_LIST_DEFINITION(IntArray, int, int);
 ```
 
 ### main.c
@@ -22,7 +22,7 @@ NEW_ARRAY_DEFINITION(IntArray, int, int);
 ```C
 #include "header.h"
 
-IMPLEMENT_ARRAY(IntArray, int, int, Int_copy, Int_copy, Int_cmp, Int_cmp, Int_free, Int_free);
+IMPLEMENT_LIST(IntArray, int, int, Int_copy, Int_copy, Int_cmp, Int_cmp, Int_free, Int_free);
 
 int main(int argc, char ** argv)
 {
@@ -52,14 +52,14 @@ int main(int argc, char ** argv)
 
 Boring stuff (explications)
 ---------------------------
-To create a new array you first need to create an array definition calling the MACRO [`NEW_ARRAY_DEFINITION`](https://github.com/AMDG2/CArray/blob/master/array.h#L205)
+To create a new array you first need to create an array definition calling the MACRO [`NEW_ARRAY_DEFINITION`](https://github.com/AMDG2/C-Containers/blob/master/array.h#L205)
 This macro takes 3 parameters :
 
 1. Your array type name
 2. The type of the value of array elements
 3. The type of the index of array elements
 
-Then you need to implement your definitions using the [`IMPLEMENT_ARRAY`](https://github.com/AMDG2/CArray/blob/master/array.h#L214) macro.
+Then you need to implement your definitions using the [`IMPLEMENT_ARRAY`](https://github.com/AMDG2/C-Containers/blob/master/array.h#L214) macro.
 This macro takes a lot of parameters. The third first are the same as the definitions. Then you need to pass 6 pointer to functions :
 
 1. Function to copy a value, prototype: `void _copy(VALUETYPE * dest, VALUETYPE * src)`
