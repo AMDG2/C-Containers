@@ -52,14 +52,14 @@ int main(int argc, char ** argv)
 
 Boring stuff (explications)
 ---------------------------
-To create a new array you first need to create an array definition calling the MACRO [`NEW_ARRAY_DEFINITION`](https://github.com/AMDG2/C-Containers/blob/master/array.h#L205)
+To create a new array you first need to create an array definition calling the MACRO [`NEW_LIST_DEFINITION`](https://github.com/AMDG2/C-Containers/blob/master/list.h#L215)
 This macro takes 3 parameters :
 
 1. Your array type name
 2. The type of the value of array elements
 3. The type of the index of array elements
 
-Then you need to implement your definitions using the [`IMPLEMENT_ARRAY`](https://github.com/AMDG2/C-Containers/blob/master/array.h#L214) macro.
+Then you need to implement your definitions using the [`IMPLEMENT_LIST`](https://github.com/AMDG2/C-Containers/blob/master/list.h#L224) macro.
 This macro takes a lot of parameters. The third first are the same as the definitions. Then you need to pass 6 pointer to functions :
 
 1. Function to copy a value, prototype: `void _copy(VALUETYPE * dest, VALUETYPE * src)`
