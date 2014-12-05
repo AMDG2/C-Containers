@@ -15,49 +15,89 @@ extern "C" {
 // =============
 //  Definitions
 // =============
-#define NEW_MAP_ELEM(ElemTypename, Valuetype, Indextype) \
+#define NEW_MAP_ELEM(MAP, ElemTypename, Valuetype, Indextype) \
+/**
+ Iterator to an element of a MAP object
+ */ \
 typedef struct _ ## ElemTypename \
 { \
-	Valuetype value; \
-	Indextype index; \
-	struct _ ## ElemTypename * next; \
-	struct _ ## ElemTypename * prev; \
+	Valuetype value; /**< Value of the element */\
+	Indextype index; /**< Index of the element */\
+	struct _ ## ElemTypename * next; /**< Pointer to the next element in the map */\
+	struct _ ## ElemTypename * prev; /**< Pointer to the previous element in the map */\
 } ElemTypename
 
 #define NEW_MAP_TYPE(MAP, Valuetype, Indextype) \
-NEW_MAP_ELEM(MAP ## _elem_t, Valuetype, Indextype); \
+NEW_MAP_ELEM(MAP, MAP ## _elem_t, Valuetype, Indextype); \
 typedef struct MAP \
 { \
-	MAP ## _elem_t * begin; \
-	MAP ## _elem_t * end; \
-	int    size; \
-	size_t elemSize; \
-	int    freeValue; \
-	int    freeIndex; \
-	void (*_copyValue)(Valuetype * dest, Valuetype * src); \
-	void (*_copyIndex)(Indextype * dest, Indextype * src); \
-	int (*_cmpValue)(Valuetype val1, Valuetype val2); \
-	int (*_cmpIndex)(Indextype val1, Indextype val2); \
-	void (*_freeValue)(Valuetype value); \
-	void (*_freeIndex)(Indextype index); \
+	MAP ## _elem_t * begin; /**< Beginning of the map */\
+	MAP ## _elem_t * end;   /**< End of the map */\
+	int    size; /**< Map size */\
+	size_t elemSize; /**< Size of one element in the map */\
+	int    freeValue; /**< Flag:<br>1: Automatically free the value<br>0: Do not automatically free the value */\
+	int    freeIndex; /**< Flag:<br>1: Automatically free the index<br>0: Do not automatically free the index */\
+	void (*_copyValue)(Valuetype * dest, Valuetype * src); /**< Pointer to a function used to copy a value */\
+	void (*_copyIndex)(Indextype * dest, Indextype * src); /**< Pointer to a function used to copy an index */\
+	int (*_cmpValue)(Valuetype val1, Valuetype val2); /**< Pointer to a function used to compare two values */\
+	int (*_cmpIndex)(Indextype val1, Indextype val2); /**< Pointer to a function used to compare two indexes */\
+	void (*_freeValue)(Valuetype value); /**< Pointer to a function used to free a value */\
+	void (*_freeIndex)(Indextype index); /**< Pointer to a function used to free an index */\
 } MAP
 
 #define MAP_FN_NEW(MAP) \
+/**
+ @brief Create a new MAP object
+ @return A pointer to an allocated and initialized
+ MAP object in memory
+ */ \
 MAP * MAP ## _new()
 
 #define MAP_FN_FREE(MAP) \
+/**
+ Destroy a MAP object
+ @param map A pointer to a MAP object
+ */ \
 void MAP ## _free(MAP * map)
 
 #define MAP_FN_ADD_STRUCT(MAP, Valuetype, Indextype) \
+/**
+ Add an element to the map
+ @details If an element already have this index
+ its value will be updated.
+ 
+ @param map   The map to use
+ @param index The index of the element to add
+ @param value The value to set
+ @return      Return an iterator to the added element
+ */ \
 MAP ## _elem_t * MAP ## _add(MAP * map, Indextype index, Valuetype value)
 
 #define MAP_FN_REMOVE_STRUCT(MAP, Indextype) \
+/**
+ Remove an element from the map
+ @param map   A pointer to a valid MAP object
+ @param index The index of the element to remove
+ @return      The pointer to the MAP object
+ */ \
 MAP * MAP ## _remove(MAP * map, Indextype index)
 
 #define MAP_FN_GET_STRUCT(MAP, Indextype) \
+/**
+ Get an iterator to an element from a MAP
+ @param map   A pointer to a valid MAP object
+ @param index The index of the element to get
+ @return      Iterator to the element if present. NULL otherwise
+ */ \
 MAP ## _elem_t * MAP ## _get(MAP * map, Indextype index)
 
 #define MAP_FN_SEARCH_STRUCT(MAP, Valuetype) \
+/**
+ Search for an element in map
+ @param map    A pointer to a valid MAP object
+ @param search The element to search in the map. Must be a valid ValueType object
+ @return       Iterator to the element if found. NULL otherwise
+ */ \
 MAP ## _elem_t * MAP ## _search(MAP * map, Valuetype search)
 
 //#define MAP_FN_GET_PREVIOUS(MAP, Indextype) \
