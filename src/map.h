@@ -8,6 +8,10 @@
 
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // =============
 //  Definitions
 // =============
@@ -210,5 +214,9 @@ IMPLEMENT_MAP_FN_ADD_STRUCT(MAP, VALUETYPE, INDEXTYPE); \
 IMPLEMENT_MAP_FN_REMOVE_STRUCT(MAP, INDEXTYPE); \
 IMPLEMENT_MAP_FN_GET_STRUCT(MAP, INDEXTYPE); \
 IMPLEMENT_MAP_FN_SEARCH_STRUCT(MAP, VALUETYPE) \
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __MAP_H__

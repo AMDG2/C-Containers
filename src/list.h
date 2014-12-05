@@ -7,6 +7,11 @@
 #define __LIST_H__
 
 #include <stdlib.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // =============
 //  Definitions
 // =============
@@ -273,5 +278,10 @@ IMPLEMENT_LIST_FN_REMOVE_STRUCT(LIST); \
 IMPLEMENT_LIST_FN_GET_STRUCT(LIST); \
 IMPLEMENT_LIST_FN_SEARCH_STRUCT(LIST, VALUETYPE); \
 IMPLEMENT_LIST_FN_UPDATE_IDX(LIST)
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __LIST_H__

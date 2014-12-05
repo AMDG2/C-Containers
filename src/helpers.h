@@ -8,6 +8,10 @@
 
 #include <string.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Compare two integers
  * @param n1 First integer
@@ -89,4 +93,7 @@ inline void Float_free  (float    val) { (void)(val); }
 inline void Double_free (double   val) { (void)(val); }
 inline void Str_free    (char   * str) { free(str);   }
 
+#ifdef __cplusplus
+}
+#endif
 #endif // __C_CONTAINERS_HELPER_H__
