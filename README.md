@@ -3,61 +3,22 @@ C-Containers
 
 C-Containers is a little library that helps you play with containers in C.
 
-Let me play !
+Documentation
 =============
 
-Example
--------
+You can generate a documentation using `make documentation`
 
-Play with the example : http://runnable.com/VIDc4pRLEWI-scta/c-containers-example-for-c%2B%2B
+Examples
+========
 
-### header.h
+Play with an example : http://runnable.com/VIDc4pRLEWI-scta/c-containers-example-for-c%2B%2B
 
-```C
-#include "list.h"
+You also have examples in the [examples](https://github.com/AMDG2/C-Containers/blob/master/examples/) folder.
 
-NEW_LIST_DEFINITION(AgeList, int, char *);
-```
+You can run the example with `make` then `./examples/example`
 
-### main.c
-
-```C
-#include <stdio.h>
-#include "header.h"
-
-IMPLEMENT_LIST(AgeList, int, char *, Int_copy, Str_copy, Int_cmp, Str_cmp, Int_free, Str_free);
-
-int main(int argc, char ** argv)
-{
-	AgeList * list = AgeList_new();
-	AgeList_elem_t * it = NULL;
-	int   sum  = 0;
-	float avg = 0;
-
-	AgeList_add(list, "Paul", 12);
-	AgeList_add(list, "Mary", 15);
-	AgeList_add(list, "John", 8);
-	AgeList_add(list, "Yo", 16);
-	AgeList_add(list, "Georges", 18);
-	AgeList_add(list, "Harrison", 6);
-	AgeList_add(list, "Erwan", 11);
-
-	for(it = list->array ; it != NULL ; it = it->next)
-	{
-		printf("%s is %d years old\n", it->index, it->value);
-		sum += it->value;
-	}
-
-	avg = sum/array->size;
-
-	printf("Average age : %.2f\n", avg);
-
-	return 0;
-}
-```
-
-Boring stuff (explications)
----------------------------
+Explications
+============
 To create a new array you first need to create an array definition calling the MACRO [`NEW_LIST_DEFINITION`](https://github.com/AMDG2/C-Containers/blob/master/list.h#L215)
 This macro takes 3 parameters :
 
