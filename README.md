@@ -9,42 +9,48 @@ Let me play !
 Example
 -------
 
+Play with the example : http://runnable.com/VIDc4pRLEWI-scta/c-containers-example-for-c%2B%2B
+
 ### header.h
 
 ```C
 #include "list.h"
 
-NEW_LIST_DEFINITION(IntArray, int, int);
+NEW_LIST_DEFINITION(AgeList, int, char *);
 ```
 
 ### main.c
 
 ```C
+#include <stdio.h>
 #include "header.h"
 
-IMPLEMENT_LIST(IntArray, int, int, Int_copy, Int_copy, Int_cmp, Int_cmp, Int_free, Int_free);
+IMPLEMENT_LIST(AgeList, int, char *, Int_copy, Str_copy, Int_cmp, Str_cmp, Int_free, Str_free);
 
 int main(int argc, char ** argv)
 {
-	IntArray * array = IntArray_new();
-	IntArray_elem_t * it = NULL;
+	AgeList * list = AgeList_new();
+	AgeList_elem_t * it = NULL;
 	int   sum  = 0;
 	float avg = 0;
 
-	IntArray_add(array, 0, 12);
-	IntArray_add(array, 1, 15);
-	IntArray_add(array, 2, 8);
-	IntArray_add(array, 3, 16);
-	IntArray_add(array, 4, 18);
-	IntArray_add(array, 5, 6);
-	IntArray_add(array, 6, 11);
+	AgeList_add(list, "Paul", 12);
+	AgeList_add(list, "Mary", 15);
+	AgeList_add(list, "John", 8);
+	AgeList_add(list, "Yo", 16);
+	AgeList_add(list, "Georges", 18);
+	AgeList_add(list, "Harrison", 6);
+	AgeList_add(list, "Erwan", 11);
 
-	for(it = array->array ; it != NULL ; it = it->next)
+	for(it = list->array ; it != NULL ; it = it->next)
+	{
+		printf("%s is %d years old\n", it->index, it->value);
 		sum += it->value;
+	}
 
 	avg = sum/array->size;
 
-	printf("Average note : %.2f\n", avg);
+	printf("Average age : %.2f\n", avg);
 
 	return 0;
 }
