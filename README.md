@@ -1,8 +1,6 @@
 C-Containers
 ============
 
-![logo](logo.svg)
-
 C-Containers is a little library that helps you play with containers in C.
 
 Documentation
