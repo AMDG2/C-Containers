@@ -1,6 +1,8 @@
 C-Containers
 ============
 
+![logo](logo.svg)
+
 C-Containers is a little library that helps you play with containers in C.
 
 Documentation
@@ -17,24 +19,44 @@ You also have examples in the [examples](https://github.com/AMDG2/C-Containers/b
 
 You can run the example with `make` then `./examples/example`
 
-Explications
-============
-To create a new array you first need to create an array definition calling the MACRO [`NEW_LIST_DEFINITION`](https://github.com/AMDG2/C-Containers/blob/master/list.h#L215)
-This macro takes 3 parameters :
+Overview
+========
+This library use macro to create new types, and associated functions to play with.
 
-1. Your array type name
-2. The type of the value of array elements
-3. The type of the index of array elements
+Actually there are two available containers :
+- List
+- Map
 
-Then you need to implement your definitions using the [`IMPLEMENT_LIST`](https://github.com/AMDG2/C-Containers/blob/master/list.h#L224) macro.
-This macro takes a lot of parameters. The third first are the same as the definitions. Then you need to pass 6 pointer to functions :
+List container
+--------------
+A list container is a doubly chained list. Each element have a value, and an index.
+The index is an `unsigned int` and the value type depends on what you define.
 
-1. Function to copy a value, prototype: `void _copy(VALUETYPE * dest, VALUETYPE * src)`
-2. The same as 1. but for indexes
-3. Function to compare two values, prototype: `int _cmp(VALUETYPE val1, VALUETYPE val2)`
-4. The same as 3. but for indexes
-5. Function to free a value, prototype: `void _free(VALUETYPE value)`
-6. The same as 5. but for indexes
+To create a list container you must call two macros:
+- `NEW_LIST_DEFINITION`
+	- generally called in a header file (could be a source file)
+	- it creates needed structures and functions prototypes
+- `IMPLEMENT_LIST`
+	- called in a source file (can't be called in header)
+	- it creates functions implementation
+	
+To see an example open the `examples/main.c` file.
+
+Map container
+--------------
+A Map container is a doubly chained list. Each element have a value, and an index.
+The index and the value types depends on what you define.
+
+To create a list container you must call two macros:
+- `NEW_MAP_DEFINITION`
+	- generally called in a header file (could be a source file)
+	- it creates needed structures and functions prototypes
+- `IMPLEMENT_MAP`
+	- called in a source file (can't be called in header)
+	- it creates functions implementation
+	
+To see an example open the `examples/main.c` file.
+
 
 License
 =======
