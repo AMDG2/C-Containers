@@ -248,7 +248,7 @@ LIST * LIST ## _updateIndex(LIST * list) \
 	it = list->begin; \
 	while(it != NULL) \
 	{ \
-		it->index = i++\
+		it->index = index++;\
 		it = it->next;\
 	} \
 	return list; \
