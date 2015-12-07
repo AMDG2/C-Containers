@@ -22,6 +22,8 @@ This library use macro to create new types, and associated functions to play wit
 Actually there are two available containers :
 - List
 - Map
+- Stack
+- Queue
 
 List container
 --------------

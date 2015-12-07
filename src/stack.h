@@ -42,8 +42,7 @@ typedef struct STACK \
 #define STACK_FN_NEW(STACK) \
 /**
  @brief Create a new STACK object
- @return A pointer to an allocated and initialized
- STACK object in memory
+ @return A pointer to an allocated and initialized STACK object in memory
  */ \
 STACK * STACK ## _new()
 
@@ -56,33 +55,34 @@ void STACK ## _free(STACK * stack)
 
 #define STACK_FN_PUSH_STRUCT(STACK, ValueType) \
 /**
- Add an element to the stack
- @details If an element already have this index
- its value will be updated.
-
+ Push an element to the stack
  @param stack  The stack to use
  @param value The value to set
- @return      Return an iterator to the added element
  */ \
-STACK ## _elem_t * STACK ## _push(STACK * stack, ValueType value)
+void STACK ## _push(STACK * stack, ValueType value)
 
 #define STACK_FN_POP_STRUCT(STACK, ValueType) \
 /**
  Remove an element from the stack
  @param stack  A pointer to a valid STACK object
- @param index The index of the element to remove
- @return      The pointer to the STACK object
+ @return       The pointer to the STACK object
  */ \
 ValueType STACK ## _pop(STACK * stack)
 
 #define STACK_FN_PEEK_STRUCT(STACK, ValueType) \
 /**
- Get an iterator to an element from a stack
+ Get the value on top of the stack
  @param stack  A pointer to a valid STACK object
- @param index The index of the element to get
- @return      Iterator to the element if present. NULL otherwise
+ @return       Iterator to the element if present. NULL otherwise
  */ \
 ValueType STACK ## _peek(STACK * stack)
+
+#define STACK_FN_CLEAR_STRUCT(STACK) \
+/**
+ Clear the stack
+ @param stack A pointer to a valid STACK object
+ */ \
+void STACK ## _clear(STACK * stack)
 
 // =================
 //  Implementations
@@ -117,12 +117,12 @@ void STACK ## _free(STACK * stack) \
 }
 
 #define IMPLEMENT_STACK_FN_PUSH_STRUCT(STACK, Valuetype) \
-STACK ## _elem_t * STACK ## _push(STACK * stack, Valuetype value) \
+void STACK ## _push(STACK * stack, Valuetype value) \
 { \
 	STACK ## _elem_t * elem = NULL; \
 	/* Test if stack is NULL */\
 	if(stack == NULL) \
-		return NULL; \
+		return; \
 	/* Create the element */\
 	elem = malloc(stack->elemSize); \
 	elem->next = stack->top; \
@@ -130,7 +130,6 @@ STACK ## _elem_t * STACK ## _push(STACK * stack, Valuetype value) \
 	/* Insert the element */\
 	stack->size++; \
 	stack->top = elem; \
-	return elem; \
 }
 
 
