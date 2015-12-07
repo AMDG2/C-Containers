@@ -11,9 +11,7 @@ You can generate a documentation using `make documentation`
 Examples
 ========
 
-Play with an example : http://runnable.com/VIDc4pRLEWI-scta/c-containers-example-for-c%2B%2B
-
-You also have examples in the [examples](https://github.com/AMDG2/C-Containers/blob/master/examples/) folder.
+You also have examples in the [examples](examples/) folder.
 
 You can run the example with `make` then `./examples/example`
 
@@ -37,7 +35,7 @@ To create a list container you must call two macros:
 - `IMPLEMENT_LIST`
 	- called in a source file (can't be called in header)
 	- it creates functions implementation
-	
+
 To see an example open the `examples/main.c` file.
 
 Map container
@@ -52,7 +50,7 @@ To create a list container you must call two macros:
 - `IMPLEMENT_MAP`
 	- called in a source file (can't be called in header)
 	- it creates functions implementation
-	
+
 To see an example open the `examples/main.c` file.
 
 
