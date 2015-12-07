@@ -1,6 +1,6 @@
 /**
  * @file queue.h
- * @brief List container definition
+ * @brief Queue container definition
  * @author Baudouin FEILDEL
  */
 #ifndef __QUEUE_H__
@@ -30,9 +30,9 @@ typedef struct _ ## ElemTypename \
 NEW_QUEUE_ELEM(QUEUE, QUEUE ## _elem_t, Valuetype); \
 typedef struct QUEUE \
 { \
-	QUEUE ## _elem_t * head;  /**< head of the queue */\
-	QUEUE ## _elem_t * queue; /**< queue of the queue */\
-	int    size;              /**< List size */\
+	QUEUE ## _elem_t * head;  /**< Head of the queue */\
+	QUEUE ## _elem_t * queue; /**< Queue of the queue */\
+	int    size;              /**< Queue size */\
 	size_t elemSize;          /**< Size of one element in the queue */\
 	int    freeValue;         /**< Flag:<br>1: Automatically free the value<br>0: Do not automatically free the value */\
 	void (*_copyValue) (Valuetype * dest, Valuetype * src); /**< Pointer to a function used to copy a value */\

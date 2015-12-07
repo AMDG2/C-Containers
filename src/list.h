@@ -61,7 +61,7 @@ void LIST ## _free(LIST * list)
  Add an element to the list
  @details If an element already have this index
  its value will be updated.
- 
+
  @param list  The list to use
  @param index The index of the element to add
  @param value The value to set
@@ -100,7 +100,7 @@ LIST ## _elem_t * LIST ## _search(LIST * list, Valuetype search)
 /**
  Update index of elements in \c list
  @details This function will re-index all the elements in the \c list
- 
+
  @param list A pointer to a valid LIST object
  */ \
 LIST * LIST ## _updateIndex(LIST * list)

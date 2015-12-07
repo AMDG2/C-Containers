@@ -7,25 +7,25 @@
 
 #include "../src/list.h"
 #include "../src/map.h"
-#include "../src/pile.h"
+#include "../src/stack.h"
 #include "../src/queue.h"
 
 #include "../src/helpers.h"
 
 NEW_MAP_DEFINITION(AgeMap, int, char *);
 NEW_LIST_DEFINITION(ScoreList, int);
-NEW_PILE_DEFINITION(MonTypePile, int);
-NEW_QUEUE_DEFINITION(MonTypeQueue, int);
+NEW_STACK_DEFINITION(MyStack, int);
+NEW_QUEUE_DEFINITION(MyQueue, int);
 
 int main(int argc, char ** argv)
 {
 	// **Always** initialize your pointers to NULL
-	AgeMap       * ages   = NULL;
-	ScoreList    * scores = NULL;
-    MonTypePile  * pile = NULL;
-    MonTypeQueue * file = NULL;
+	AgeMap    * ages   = NULL;
+	ScoreList * scores = NULL;
+    MyStack   * stack  = NULL;
+    MyQueue   * queue  = NULL;
 
-	AgeMap_elem_t    * agesIt  = NULL;
+	AgeMap_elem_t    * agesIt   = NULL;
 	ScoreList_elem_t * scoresIt = NULL;
 
     int   sum = 0, i = 0, tmp = 0;
@@ -84,43 +84,47 @@ int main(int argc, char ** argv)
     // */
 
     //*
-    printf("\n--- Pile (LIFO) ---\n");
-    pile = MonTypePile_new();
+    printf("\n--- Stack (LIFO) ---\n");
+    stack = MyStack_new();
 
-    printf("Empiler: ");
+    printf("Push: ");
     for(i = 0 ; i < 5 ; i++)
     {
         printf("%d, ", i);
-        MonTypePile_push(pile, i);
+        MyStack_push(stack, i);
     }
 
-    printf("Dépiler: ");
-    while(pile->size > 0)
+    printf("Pop:  ");
+    while(stack->size > 0)
     {
-        tmp = MonTypePile_pop(pile);
+        tmp = MyStack_pop(stack);
         printf("%d, ", tmp);
     }
     printf("\n");
+
+    MyStack_free(stack);
     // */
 
     //*
-    printf("\n--- File (FIFO) ---\n");
-    file = MonTypeQueue_new();
+    printf("\n--- Queue (FIFO) ---\n");
+    queue = MyQueue_new();
 
-    printf("Enfiler: ");
+    printf("Enqueue: ");
     for(i = 0 ; i < 5 ; i++)
     {
         printf("%d, ", i);
-        MonTypeQueue_enqueue(file, i);
+        MyQueue_enqueue(queue, i);
     }
 
-    printf("Défiler: ");
-    while(file->size > 0)
+    printf("Dequeue: ");
+    while(queue->size > 0)
     {
-        tmp = MonTypeQueue_dequeue(file);
+        tmp = MyQueue_dequeue(queue);
         printf("%d, ", tmp);
     }
     printf("\n");
+
+    MyQueue_free(queue);
     // */
 
 	return 0;
@@ -128,5 +132,5 @@ int main(int argc, char ** argv)
 
 IMPLEMENT_MAP(AgeMap, int, char *, Int_copy, Str_copy, Int_cmp, Str_cmp, Int_free, Str_free);
 IMPLEMENT_LIST(ScoreList, int, Int_copy, Int_cmp, Int_free);
-IMPLEMENT_PILE(MonTypePile, int, Int_copy, Int_cmp, Int_free, 0);
-IMPLEMENT_QUEUE(MonTypeQueue, int, Int_copy, Int_cmp, Int_free, 0);
+IMPLEMENT_STACK(MyStack, int, Int_copy, Int_cmp, Int_free, 0);
+IMPLEMENT_QUEUE(MyQueue, int, Int_copy, Int_cmp, Int_free, 0);
