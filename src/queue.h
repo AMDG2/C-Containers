@@ -15,19 +15,19 @@ extern "C" {
 // =============
 //  Definitions
 // =============
-#define NEW_QUEUE_ELEM(QUEUE, ElemTypename, Valuetype) \
+#define NEW_QUEUE_ELEM(QUEUE, ElemTypename, ValueType) \
 /**
  Iterator to an element of a QUEUE object
  */ \
 typedef struct _ ## ElemTypename \
 { \
-	Valuetype    value; /**< Value of the element */\
+	ValueType    value; /**< Value of the element */\
 	unsigned int index; /**< Index of the element */\
 	struct _ ## ElemTypename * previous; /**< Pointer to the previous element in the queue */\
 } ElemTypename
 
-#define NEW_QUEUE_TYPE(QUEUE, Valuetype) \
-NEW_QUEUE_ELEM(QUEUE, QUEUE ## _elem_t, Valuetype); \
+#define NEW_QUEUE_TYPE(QUEUE, ValueType) \
+NEW_QUEUE_ELEM(QUEUE, QUEUE ## _elem_t, ValueType); \
 typedef struct QUEUE \
 { \
 	QUEUE ## _elem_t * head;  /**< Head of the queue */\
@@ -35,9 +35,10 @@ typedef struct QUEUE \
 	int    size;              /**< Queue size */\
 	size_t elemSize;          /**< Size of one element in the queue */\
 	int    freeValue;         /**< Flag:<br>1: Automatically free the value<br>0: Do not automatically free the value */\
-	void (*_copyValue) (Valuetype * dest, Valuetype * src); /**< Pointer to a function used to copy a value */\
-	int  (*_cmpValue)  (Valuetype val1, Valuetype val2);    /**< Pointer to a function used to compare two values */\
-	void (*_freeValue) (Valuetype value);                   /**< Pointer to a function used to free a value */\
+	void (*_copyValue) (ValueType * dest, ValueType * src); /**< Pointer to a function used to copy a value */\
+	int  (*_cmpValue)  (ValueType val1, ValueType val2);    /**< Pointer to a function used to compare two values */\
+	void (*_freeValue) (ValueType value);                   /**< Pointer to a function used to free a value */\
+	void (*_print)     (ValueType value);                   /**< Pointer to a function used to print a value */\
 } QUEUE
 
 #define QUEUE_FN_NEW(QUEUE) \
@@ -74,7 +75,7 @@ QUEUE ## _elem_t * QUEUE ## _enqueue(QUEUE * queue, ValueType value)
  @param index The index of the element to remove
  @return      The pointer to the QUEUE object
  */ \
-ValueType QUEUE ## _DEQUEUE(QUEUE * queue)
+ValueType QUEUE ## _dequeue(QUEUE * queue)
 
 #define QUEUE_FN_HEAD_STRUCT(QUEUE, ValueType) \
 /**
@@ -85,10 +86,17 @@ ValueType QUEUE ## _DEQUEUE(QUEUE * queue)
  */ \
 ValueType QUEUE ## _head(QUEUE * queue)
 
+#define QUEUE_FN_PRINT_STRUCT(QUEUE) \
+/**
+ Print a queue
+ @param queue A pointer to a valid QUEUE object
+ */ \
+void QUEUE ## _print(QUEUE * queue)
+
 // =================
 //  Implementations
 // =================
-#define IMPLEMENT_QUEUE_FN_NEW(QUEUE, Valuetype, FN_CPY_VAL, FN_CMP_VAL, FN_FREE_VAL) \
+#define IMPLEMENT_QUEUE_FN_NEW(QUEUE, Valuetype, FN_CPY_VAL, FN_CMP_VAL, FN_FREE_VAL, FN_PRINT_VAL) \
 QUEUE * QUEUE ## _new() \
 { \
 	QUEUE * queue = malloc(sizeof(QUEUE)); \
@@ -100,6 +108,7 @@ QUEUE * QUEUE ## _new() \
 	queue->_copyValue = FN_CPY_VAL; \
 	queue->_cmpValue  = FN_CMP_VAL; \
 	queue->_freeValue = FN_FREE_VAL; \
+	queue->_print     = FN_PRINT_VAL; \
 	return queue; \
 }
 
@@ -169,6 +178,22 @@ ValueType QUEUE ## _head(QUEUE * queue) \
 	return DEFAULT_VALUE; \
 }
 
+#define IMPLEMENT_QUEUE_FN_PRINT(QUEUE) \
+void QUEUE ## _print(QUEUE * queue) \
+{ \
+	QUEUE ## _elem_t * it = NULL; \
+	printf("["); \
+	it = queue->head; \
+	for(it = queue->head ; it != NULL ; it = it->previous) \
+	{ \
+		queue->_print(it->value); \
+		if(it->previous != NULL) \
+			printf(", "); \
+	} \
+	printf("]\n"); \
+}
+
+
 // MACRO HELPERS (One line definitions && implementations)
 #define NEW_QUEUE_DEFINITION(QUEUE, VALUETYPE) \
 NEW_QUEUE_TYPE(QUEUE, VALUETYPE); \
@@ -176,14 +201,16 @@ QUEUE_FN_NEW(QUEUE); \
 QUEUE_FN_FREE(QUEUE); \
 QUEUE_FN_ENQUEUE_STRUCT(QUEUE, VALUETYPE); \
 QUEUE_FN_DEQUEUE_STRUCT(QUEUE, VALUETYPE); \
-QUEUE_FN_HEAD_STRUCT(QUEUE, VALUETYPE)
+QUEUE_FN_HEAD_STRUCT(QUEUE, VALUETYPE); \
+QUEUE_FN_PRINT_STRUCT(QUEUE)
 
-#define IMPLEMENT_QUEUE(QUEUE, VALUETYPE, FN_CPY_VAL, FN_CMP_VAL, FN_FREE_VAL, DEFAULT_VALUE) \
-IMPLEMENT_QUEUE_FN_NEW(QUEUE, VALUETYPE, FN_CPY_VAL, FN_CMP_VAL, FN_FREE_VAL); \
+#define IMPLEMENT_QUEUE(QUEUE, VALUETYPE, FN_CPY_VAL, FN_CMP_VAL, FN_FREE_VAL, FN_PRINT_VAL, DEFAULT_VALUE) \
+IMPLEMENT_QUEUE_FN_NEW(QUEUE, VALUETYPE, FN_CPY_VAL, FN_CMP_VAL, FN_FREE_VAL, FN_PRINT_VAL); \
 IMPLEMENT_QUEUE_FN_FREE(QUEUE); \
 IMPLEMENT_QUEUE_FN_ENQUEUE_STRUCT(QUEUE, VALUETYPE); \
 IMPLEMENT_QUEUE_FN_DEQUEUE_STRUCT(QUEUE, VALUETYPE, DEFAULT_VALUE); \
-IMPLEMENT_QUEUE_FN_HEAD_STRUCT(QUEUE, VALUETYPE, DEFAULT_VALUE)
+IMPLEMENT_QUEUE_FN_HEAD_STRUCT(QUEUE, VALUETYPE, DEFAULT_VALUE); \
+IMPLEMENT_QUEUE_FN_PRINT(QUEUE)
 
 #ifdef __cplusplus
 }

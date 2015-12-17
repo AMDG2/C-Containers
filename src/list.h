@@ -15,20 +15,20 @@ extern "C" {
 // =============
 //  Definitions
 // =============
-#define NEW_LIST_ELEM(LIST, ElemTypename, Valuetype) \
+#define NEW_LIST_ELEM(LIST, ElemTypename, ValueType) \
 /**
  Iterator to an element of a LIST object
  */ \
 typedef struct _ ## ElemTypename \
 { \
-	Valuetype    value; /**< Value of the element */\
+	ValueType    value; /**< Value of the element */\
 	unsigned int index; /**< Index of the element */\
 	struct _ ## ElemTypename * next; /**< Pointer to the next element in the list */\
 	struct _ ## ElemTypename * prev; /**< Pointer to the previous element in the list */\
 } ElemTypename
 
-#define NEW_LIST_TYPE(LIST, Valuetype) \
-NEW_LIST_ELEM(LIST, LIST ## _elem_t, Valuetype); \
+#define NEW_LIST_TYPE(LIST, ValueType) \
+NEW_LIST_ELEM(LIST, LIST ## _elem_t, ValueType); \
 typedef struct LIST \
 { \
 	LIST ## _elem_t * begin; /**< Beginning of the list */\
@@ -36,9 +36,10 @@ typedef struct LIST \
 	int    size; /**< List size */\
 	size_t elemSize; /**< Size of one element in the list */\
 	int    freeValue; /**< Flag:<br>1: Automatically free the value<br>0: Do not automatically free the value */\
-	void (*_copyValue) (Valuetype * dest, Valuetype * src); /**< Pointer to a function used to copy a value */\
-	int  (*_cmpValue)  (Valuetype val1, Valuetype val2); /**< Pointer to a function used to compare two values */\
-	void (*_freeValue) (Valuetype value); /**< Pointer to a function used to free a value */\
+	void (*_copyValue) (ValueType * dest, ValueType * src); /**< Pointer to a function used to copy a value */\
+	int  (*_cmpValue)  (ValueType val1, ValueType val2); /**< Pointer to a function used to compare two values */\
+	void (*_freeValue) (ValueType value); /**< Pointer to a function used to free a value */\
+	void (*_print)     (ValueType value); /**< Pointer to a function used to print a value */\
 } LIST
 
 #define LIST_FN_NEW(LIST) \
@@ -105,13 +106,22 @@ LIST ## _elem_t * LIST ## _search(LIST * list, Valuetype search)
  */ \
 LIST * LIST ## _updateIndex(LIST * list)
 
-//#define LIST_FN_GET_PREVIOUS(LIST, Indextype) \
-//LIST ## _elem_t LIST ## _find_previous(LIST * list, Indextype index)
+/*
+#define LIST_FN_GET_PREVIOUS(LIST, Indextype) \
+LIST ## _elem_t LIST ## _find_previous(LIST * list, Indextype index)
+ */
+
+#define LIST_FN_PRINT_STRUCT(LIST) \
+/**
+ Print a list
+ @param list A pointer to a valid LIST object
+ */ \
+void LIST ## _print(LIST * list)
 
 // =================
 //  Implementations
 // =================
-#define IMPLEMENT_LIST_FN_NEW(LIST, Valuetype, FN_CPY_VAL, FN_CMP_VAL, FN_FREE_VAL) \
+#define IMPLEMENT_LIST_FN_NEW(LIST, Valuetype, FN_CPY_VAL, FN_CMP_VAL, FN_FREE_VAL, FN_PRINT_VAL) \
 LIST * LIST ## _new() \
 { \
 	LIST * list = malloc(sizeof(LIST)); \
@@ -123,6 +133,7 @@ LIST * LIST ## _new() \
 	list->_copyValue = FN_CPY_VAL; \
 	list->_cmpValue  = FN_CMP_VAL; \
 	list->_freeValue = FN_FREE_VAL; \
+	list->_print     = FN_PRINT_VAL; \
 	return list; \
 }
 
@@ -233,7 +244,7 @@ LIST ## _elem_t * LIST ## _search(LIST * list, Valuetype search) \
 	{ \
 		if(list->_cmpValue(it->value, search) == 0) \
 		{ \
-			out == it; \
+			out = it; \
 			it = NULL; \
 		} \
 		else \
@@ -259,6 +270,21 @@ LIST * LIST ## _updateIndex(LIST * list) \
 	return list; \
 }
 
+#define IMPLEMENT_LIST_FN_PRINT(LIST) \
+void LIST ## _print(LIST * list) \
+{ \
+	LIST ## _elem_t * it = NULL; \
+	printf("["); \
+	it = list->begin; \
+	for(it = list->begin ; it != NULL ; it = it->next) \
+	{ \
+		list->_print(it->value); \
+		if(it->next != NULL) \
+			printf(", "); \
+	} \
+	printf("]\n"); \
+}
+
 // MACRO HELPERS (One line definitions && implementations)
 #define NEW_LIST_DEFINITION(LIST, VALUETYPE) \
 NEW_LIST_TYPE(LIST, VALUETYPE); \
@@ -268,16 +294,18 @@ LIST_FN_ADD_STRUCT(LIST, VALUETYPE); \
 LIST_FN_REMOVE_STRUCT(LIST); \
 LIST_FN_GET_STRUCT(LIST); \
 LIST_FN_SEARCH_STRUCT(LIST, VALUETYPE); \
-LIST_FN_UPDATE_IDX(LIST)
+LIST_FN_UPDATE_IDX(LIST); \
+LIST_FN_PRINT_STRUCT(LIST)
 
-#define IMPLEMENT_LIST(LIST, VALUETYPE, FN_CPY_VAL, FN_CMP_VAL, FN_FREE_VAL) \
-IMPLEMENT_LIST_FN_NEW(LIST, VALUETYPE, FN_CPY_VAL, FN_CMP_VAL, FN_FREE_VAL); \
+#define IMPLEMENT_LIST(LIST, VALUETYPE, FN_CPY_VAL, FN_CMP_VAL, FN_FREE_VAL, FN_PRINT_VAL) \
+IMPLEMENT_LIST_FN_NEW(LIST, VALUETYPE, FN_CPY_VAL, FN_CMP_VAL, FN_FREE_VAL, FN_PRINT_VAL); \
 IMPLEMENT_LIST_FN_FREE(LIST); \
 IMPLEMENT_LIST_FN_ADD_STRUCT(LIST, VALUETYPE); \
 IMPLEMENT_LIST_FN_REMOVE_STRUCT(LIST); \
 IMPLEMENT_LIST_FN_GET_STRUCT(LIST); \
 IMPLEMENT_LIST_FN_SEARCH_STRUCT(LIST, VALUETYPE); \
-IMPLEMENT_LIST_FN_UPDATE_IDX(LIST)
+IMPLEMENT_LIST_FN_UPDATE_IDX(LIST); \
+IMPLEMENT_LIST_FN_PRINT(LIST)
 
 
 #ifdef __cplusplus

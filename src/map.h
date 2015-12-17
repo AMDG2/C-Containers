@@ -100,8 +100,10 @@ MAP ## _elem_t * MAP ## _get(MAP * map, Indextype index)
  */ \
 MAP ## _elem_t * MAP ## _search(MAP * map, Valuetype search)
 
-//#define MAP_FN_GET_PREVIOUS(MAP, Indextype) \
-//MAP ## _elem_t MAP ## _find_previous(MAP * map, Indextype index)
+/*
+#define MAP_FN_GET_PREVIOUS(MAP, Indextype) \
+MAP ## _elem_t MAP ## _find_previous(MAP * map, Indextype index)
+ */
 
 // =================
 //  Implementations
@@ -228,7 +230,7 @@ MAP ## _elem_t * MAP ## _search(MAP * map, Valuetype search) \
 	{ \
 		if(map->_cmpValue(it->value, search) == 0) \
 		{ \
-			out == it; \
+			out = it; \
 			it = NULL; \
 		} \
 		else \

@@ -10,6 +10,8 @@
 
 NEW_MAP_DEFINITION(AgeMap, int, char *);
 
+#define AGE_MAX 80
+
 int main(int argc, char ** argv)
 {
 	// **Always** initialize your pointers to NULL
@@ -19,16 +21,16 @@ int main(int argc, char ** argv)
     int   sum = 0;
     float avg = 0;
 
-    printf("--- Ages ---\n");
+    printf("--- Map (ages) ---\n");
 	ages  = AgeMap_new();
 
-    AgeMap_add(ages, "Paul", 12);
-    AgeMap_add(ages, "Mary", 15);
-    AgeMap_add(ages, "John", 8);
-    AgeMap_add(ages, "Yo", 16);
-    AgeMap_add(ages, "Georges", 18);
-    AgeMap_add(ages, "Harrison", 6);
-    AgeMap_add(ages, "Erwan", 11);
+    AgeMap_add(ages, "Paul", rand() % AGE_MAX);
+    AgeMap_add(ages, "Mary", rand() % AGE_MAX);
+    AgeMap_add(ages, "John", rand() % AGE_MAX);
+    AgeMap_add(ages, "Yo", rand() % AGE_MAX);
+    AgeMap_add(ages, "Georges", rand() % AGE_MAX);
+    AgeMap_add(ages, "Harrison", rand() % AGE_MAX);
+    AgeMap_add(ages, "Erwan", rand() % AGE_MAX);
 
     for(agesIt = ages->begin ; agesIt != NULL ; agesIt = agesIt->next)
     {

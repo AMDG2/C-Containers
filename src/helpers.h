@@ -7,6 +7,8 @@
 #define __C_CONTAINERS_HELPER_H__
 
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,7 +22,7 @@ extern "C" {
  * A value > 0 if n1 > n2.  <br>
  * A value < 0 if n1 < n2.  <br>
  */
-inline int Int_cmp(int n1, int n2) { return n1 - n2; }
+int Int_cmp(int n1, int n2) { return n1 - n2; }
 
 /**
  * Compare two float
@@ -30,7 +32,7 @@ inline int Int_cmp(int n1, int n2) { return n1 - n2; }
  * A value > 0 if n1 > n2.  <br>
  * A value < 0 if n1 < n2.  <br>
  */
-inline int Float_cmp(float n1, float n2) { return n1 - n2; }
+int Float_cmp(float n1, float n2) { return n1 - n2; }
 
 /**
  * Compare two double
@@ -40,7 +42,7 @@ inline int Float_cmp(float n1, float n2) { return n1 - n2; }
  * A value > 0 if n1 > n2.  <br>
  * A value < 0 if n1 < n2.  <br>
  */
-inline int Double_cmp(double n1, double n2) { return n1 - n2; }
+int Double_cmp(double n1, double n2) { return n1 - n2; }
 
 /**
  * Compare two strings
@@ -51,35 +53,35 @@ inline int Double_cmp(double n1, double n2) { return n1 - n2; }
  * A value > 0 if str1 > str2. <br>
  * A value < 0 if str1 < str2. <br>
  */
-inline int Str_cmp(char * str1, char * str2) { return strcmp(str1, str2); }
+int Str_cmp(char * str1, char * str2) { return strcmp(str1, str2); }
 
 /**
  * Copy integer value
  * @param dest Destination
  * @param src  Source
  */
-inline void Int_copy(int * dest, int * src) { *dest = *src; }
+void Int_copy(int * dest, int * src) { *dest = *src; }
 
 /**
  * Copy float value
  * @param dest Destination
  * @param src  Source
  */
-inline void Float_copy(float * dest, float * src) { *dest = *src; }
+void Float_copy(float * dest, float * src) { *dest = *src; }
 
 /**
  * Copy double value
  * @param dest Destination
  * @param src  Source
  */
-inline void Double_copy(double * dest, double * src) { *dest = *src; }
+void Double_copy(double * dest, double * src) { *dest = *src; }
 
 /**
  * Copy a string
  * @param dest Destination
  * @param src  Source
  */
-inline void Str_copy(char ** dest, char ** src)
+void Str_copy(char ** dest, char ** src)
 {
 	int i = 0, len = strlen(*src);
 	*dest = calloc(sizeof(char) * len, sizeof(char));
@@ -88,10 +90,16 @@ inline void Str_copy(char ** dest, char ** src)
 	(*dest)[len] = '\0';
 }
 
-inline void Int_free    (int      val) { (void)(val); }
-inline void Float_free  (float    val) { (void)(val); }
-inline void Double_free (double   val) { (void)(val); }
-inline void Str_free    (char   * str) { free(str);   }
+void Int_free    (int      val) { (void)(val); }
+void Float_free  (float    val) { (void)(val); }
+void Double_free (double   val) { (void)(val); }
+void Str_free    (char   * str) { free(str);   }
+
+
+void Int_print    (int      val) { printf("%d", val);  }
+void Float_print  (float    val) { printf("%f", val);  }
+void Double_print (double   val) { printf("%lf", val); }
+void Str_print    (char   * val) { printf("%s", val);  }
 
 #ifdef __cplusplus
 }

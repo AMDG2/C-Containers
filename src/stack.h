@@ -15,28 +15,29 @@ extern "C" {
 // =============
 //  Definitions
 // =============
-#define NEW_STACK_ELEM(STACK, ElemTypename, Valuetype) \
+#define NEW_STACK_ELEM(STACK, ElemTypename, ValueType) \
 /**
  Iterator to an element of a STACK object
  */ \
 typedef struct _ ## ElemTypename \
 { \
-	Valuetype    value; /**< Value of the element */\
+	ValueType    value; /**< Value of the element */\
 	unsigned int index; /**< Index of the element */\
 	struct _ ## ElemTypename * next; /**< Pointer to the next element in the stack */\
 } ElemTypename
 
-#define NEW_STACK_TYPE(STACK, Valuetype) \
-NEW_STACK_ELEM(STACK, STACK ## _elem_t, Valuetype); \
+#define NEW_STACK_TYPE(STACK, ValueType) \
+NEW_STACK_ELEM(STACK, STACK ## _elem_t, ValueType); \
 typedef struct STACK \
 { \
 	STACK ## _elem_t * top; /**< Top of the stack */\
 	int    size;            /**< Stack size */\
 	size_t elemSize;        /**< Size of one element in the stack */\
 	int    freeValue;       /**< Flag:<br>1: Automatically free the value<br>0: Do not automatically free the value */\
-	void (*_copyValue) (Valuetype * dest, Valuetype * src); /**< Pointer to a function used to copy a value */\
-	int  (*_cmpValue)  (Valuetype val1, Valuetype val2);    /**< Pointer to a function used to compare two values */\
-	void (*_freeValue) (Valuetype value);                   /**< Pointer to a function used to free a value */\
+	void (*_copyValue) (ValueType * dest, ValueType * src); /**< Pointer to a function used to copy a value */\
+	int  (*_cmpValue)  (ValueType val1, ValueType val2);    /**< Pointer to a function used to compare two values */\
+	void (*_freeValue) (ValueType value);                   /**< Pointer to a function used to free a value */\
+	void (*_print)     (ValueType value);                   /**< Pointer to a function used to print a value */\
 } STACK
 
 #define STACK_FN_NEW(STACK) \
@@ -84,10 +85,17 @@ ValueType STACK ## _peek(STACK * stack)
  */ \
 void STACK ## _clear(STACK * stack)
 
+#define STACK_FN_PRINT_STRUCT(STACK) \
+/**
+ Print a stack
+ @param stack A pointer to a valid STACK object
+ */ \
+void STACK ## _print(STACK * set)
+
 // =================
 //  Implementations
 // =================
-#define IMPLEMENT_STACK_FN_NEW(STACK, Valuetype, FN_CPY_VAL, FN_CMP_VAL, FN_FREE_VAL) \
+#define IMPLEMENT_STACK_FN_NEW(STACK, Valuetype, FN_CPY_VAL, FN_CMP_VAL, FN_FREE_VAL, FN_PRINT_VAL) \
 STACK * STACK ## _new() \
 { \
 	STACK * stack = malloc(sizeof(STACK)); \
@@ -98,6 +106,7 @@ STACK * STACK ## _new() \
 	stack->_copyValue = FN_CPY_VAL; \
 	stack->_cmpValue  = FN_CMP_VAL; \
 	stack->_freeValue = FN_FREE_VAL; \
+	stack->_print     = FN_PRINT_VAL; \
 	return stack; \
 }
 
@@ -162,6 +171,22 @@ ValueType STACK ## _PEEK(STACK * stack) \
 	return DEFAULT_VALUE; \
 }
 
+#define IMPLEMENT_STACK_FN_PRINT(STACK) \
+void STACK ## _print(STACK * stack) \
+{ \
+	STACK ## _elem_t * it = NULL; \
+	printf("["); \
+	it = stack->top; \
+	for(it = stack->top ; it != NULL ; it = it->next) \
+	{ \
+		stack->_print(it->value); \
+		if(it->next != NULL) \
+			printf(", "); \
+	} \
+	printf("]\n"); \
+}
+
+
 // MACRO HELPERS (One line definitions && implementations)
 #define NEW_STACK_DEFINITION(STACK, VALUETYPE) \
 NEW_STACK_TYPE(STACK, VALUETYPE); \
@@ -169,14 +194,16 @@ STACK_FN_NEW(STACK); \
 STACK_FN_FREE(STACK); \
 STACK_FN_PUSH_STRUCT(STACK, VALUETYPE); \
 STACK_FN_POP_STRUCT(STACK, VALUETYPE); \
-STACK_FN_PEEK_STRUCT(STACK, VALUETYPE)
+STACK_FN_PEEK_STRUCT(STACK, VALUETYPE); \
+STACK_FN_PRINT_STRUCT(STACK)
 
-#define IMPLEMENT_STACK(STACK, VALUETYPE, FN_CPY_VAL, FN_CMP_VAL, FN_FREE_VAL, DEFAULT_VALUE) \
-IMPLEMENT_STACK_FN_NEW(STACK, VALUETYPE, FN_CPY_VAL, FN_CMP_VAL, FN_FREE_VAL); \
+#define IMPLEMENT_STACK(STACK, VALUETYPE, FN_CPY_VAL, FN_CMP_VAL, FN_FREE_VAL, FN_PRINT_VAL, DEFAULT_VALUE) \
+IMPLEMENT_STACK_FN_NEW(STACK, VALUETYPE, FN_CPY_VAL, FN_CMP_VAL, FN_FREE_VAL, FN_PRINT_VAL); \
 IMPLEMENT_STACK_FN_FREE(STACK); \
 IMPLEMENT_STACK_FN_PUSH_STRUCT(STACK, VALUETYPE); \
 IMPLEMENT_STACK_FN_POP_STRUCT(STACK, VALUETYPE, DEFAULT_VALUE); \
-IMPLEMENT_STACK_FN_PEEK_STRUCT(STACK, VALUETYPE, DEFAULT_VALUE)
+IMPLEMENT_STACK_FN_PEEK_STRUCT(STACK, VALUETYPE, DEFAULT_VALUE); \
+IMPLEMENT_STACK_FN_PRINT(STACK)
 
 #ifdef __cplusplus
 }

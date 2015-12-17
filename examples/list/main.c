@@ -8,43 +8,43 @@
 #include "../../src/list.h"
 #include "../../src/helpers.h"
 
-NEW_LIST_DEFINITION(ScoreList, int);
+NEW_LIST_DEFINITION(MyList, int);
+
+#define RANDOM_MAX 10000
 
 int main(int argc, char ** argv)
 {
-	ScoreList * scores = NULL;
-	ScoreList_elem_t * scoresIt = NULL;
+	MyList * list = NULL;
+	MyList_elem_t * it = NULL;
 
     int   sum = 0;
     float avg = 0;
 
-    printf("--- Scores ---\n");
-	scores = ScoreList_new();
+    printf("--- List ---\n");
+	list = MyList_new();
 
-	ScoreList_add(scores, 0, 50);
-	ScoreList_add(scores, 1, 20);
-	ScoreList_add(scores, 2, 75);
-	ScoreList_add(scores, 3, 35);
-	ScoreList_add(scores, 4, 12);
-	ScoreList_add(scores, 5, 97);
+	MyList_add(list, 0, rand() % RANDOM_MAX);
+	MyList_add(list, 1, rand() % RANDOM_MAX);
+	MyList_add(list, 2, rand() % RANDOM_MAX);
+	MyList_add(list, 3, rand() % RANDOM_MAX);
+	MyList_add(list, 4, rand() % RANDOM_MAX);
+	MyList_add(list, 5, rand() % RANDOM_MAX);
 
     sum = 0;
     avg = 0;
 
-    printf("Score list: ");
-    for(scoresIt = scores->begin ; scoresIt != NULL ; scoresIt = scoresIt->next)
-    {
-        printf("%d ", scoresIt->value);
-        sum += scoresIt->value;
-    }
-    printf("\n");
+    printf("List: ");
+    MyList_print(list);
+    
+    for(it = list->begin ; it != NULL ; it = it->next)
+        sum += it->value;
 
-    avg = sum/scores->size;
-    printf("Average score: %.2f\n", avg);
+    avg = sum/list->size;
+    printf("Average value: %.2f\n", avg);
 
-    ScoreList_free(scores);
+    MyList_free(list);
 
 	return 0;
 }
 
-IMPLEMENT_LIST(ScoreList, int, Int_copy, Int_cmp, Int_free);
+IMPLEMENT_LIST(MyList, int, Int_copy, Int_cmp, Int_free, Int_print);

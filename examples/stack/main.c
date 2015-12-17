@@ -15,7 +15,7 @@ int main(int argc, char ** argv)
     MyStack   * stack  = NULL;
     int i, tmp;
 
-    printf("\n--- Stack (LIFO) ---\n");
+    printf("--- Stack (LIFO) ---\n");
     stack = MyStack_new();
 
     printf("Push: ");
@@ -25,7 +25,10 @@ int main(int argc, char ** argv)
         MyStack_push(stack, i);
     }
 
-    printf("Pop:  ");
+    printf("\n");
+    MyStack_print(stack);
+
+    printf("\nPop:  ");
     while(stack->size > 0)
     {
         tmp = MyStack_pop(stack);
@@ -38,4 +41,4 @@ int main(int argc, char ** argv)
 	return 0;
 }
 
-IMPLEMENT_STACK(MyStack, int, Int_copy, Int_cmp, Int_free, 0);
+IMPLEMENT_STACK(MyStack, int, Int_copy, Int_cmp, Int_free, Int_print, 0);

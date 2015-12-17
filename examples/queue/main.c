@@ -25,7 +25,10 @@ int main(int argc, char ** argv)
         MyQueue_enqueue(queue, i);
     }
 
-    printf("Dequeue: ");
+    printf("\n");
+    MyQueue_print(queue);
+
+    printf("\nDequeue: ");
     while(queue->size > 0)
     {
         tmp = MyQueue_dequeue(queue);
@@ -38,4 +41,4 @@ int main(int argc, char ** argv)
 	return 0;
 }
 
-IMPLEMENT_QUEUE(MyQueue, int, Int_copy, Int_cmp, Int_free, 0);
+IMPLEMENT_QUEUE(MyQueue, int, Int_copy, Int_cmp, Int_free, Int_print, 0);
