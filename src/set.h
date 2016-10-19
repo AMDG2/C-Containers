@@ -236,6 +236,13 @@ SET ## _elem_t * SET ## _search(SET * set, Valuetype search) \
 	return out; \
 }
 
+#ifdef CCONTAINERS_DISABLE_PRINT
+#define IMPLEMENT_SET_FN_PRINT(SET) \
+void SET ## _print(SET * set) \
+{
+	(void)(set);
+}
+#else
 #define IMPLEMENT_SET_FN_PRINT(SET) \
 void SET ## _print(SET * set) \
 { \
@@ -250,6 +257,7 @@ void SET ## _print(SET * set) \
 	} \
 	printf("]\n"); \
 }
+#endif
 
 // MACRO HELPERS (One line definitions && implementations)
 #define NEW_SET_DEFINITION(SET, VALUETYPE) \

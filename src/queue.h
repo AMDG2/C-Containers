@@ -177,7 +177,13 @@ ValueType QUEUE ## _head(QUEUE * queue) \
 		return queue->head->value; \
 	return DEFAULT_VALUE; \
 }
-
+#ifdef CCONTAINERS_DISABLE_PRINT
+#define IMPLEMENT_QUEUE_FN_PRINT(QUEUE) \
+void QUEUE ## _print(QUEUE * queue) \
+{
+	(void)(queue);
+}
+#else
 #define IMPLEMENT_QUEUE_FN_PRINT(QUEUE) \
 void QUEUE ## _print(QUEUE * queue) \
 { \
@@ -192,6 +198,7 @@ void QUEUE ## _print(QUEUE * queue) \
 	} \
 	printf("]\n"); \
 }
+#endif
 
 
 // MACRO HELPERS (One line definitions && implementations)

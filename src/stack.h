@@ -171,6 +171,13 @@ ValueType STACK ## _PEEK(STACK * stack) \
 	return DEFAULT_VALUE; \
 }
 
+#ifdef CCONTAINERS_DISABLE_PRINT
+#define IMPLEMENT_STACK_FN_PRINT(STACK) \
+void STACK ## _print(STACK * stack) \
+{
+	(void)(stack);
+}
+#else
 #define IMPLEMENT_STACK_FN_PRINT(STACK) \
 void STACK ## _print(STACK * stack) \
 { \
@@ -185,7 +192,7 @@ void STACK ## _print(STACK * stack) \
 	} \
 	printf("]\n"); \
 }
-
+#endif
 
 // MACRO HELPERS (One line definitions && implementations)
 #define NEW_STACK_DEFINITION(STACK, VALUETYPE) \

@@ -270,6 +270,13 @@ LIST * LIST ## _updateIndex(LIST * list) \
 	return list; \
 }
 
+#ifdef CCONTAINERS_DISABLE_PRINT
+#define IMPLEMENT_LIST_FN_PRINT(LIST) \
+void LIST ## _print(LIST * list) \
+{
+	(void)(list);
+}
+#else
 #define IMPLEMENT_LIST_FN_PRINT(LIST) \
 void LIST ## _print(LIST * list) \
 { \
@@ -284,6 +291,7 @@ void LIST ## _print(LIST * list) \
 	} \
 	printf("]\n"); \
 }
+#endif
 
 // MACRO HELPERS (One line definitions && implementations)
 #define NEW_LIST_DEFINITION(LIST, VALUETYPE) \
