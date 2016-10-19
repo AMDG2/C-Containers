@@ -239,8 +239,8 @@ SET ## _elem_t * SET ## _search(SET * set, Valuetype search) \
 #ifdef CCONTAINERS_DISABLE_PRINT
 #define IMPLEMENT_SET_FN_PRINT(SET) \
 void SET ## _print(SET * set) \
-{
-	(void)(set);
+{ \
+	(void)(list); \
 }
 #else
 #define IMPLEMENT_SET_FN_PRINT(SET) \

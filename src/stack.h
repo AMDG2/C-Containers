@@ -174,8 +174,8 @@ ValueType STACK ## _PEEK(STACK * stack) \
 #ifdef CCONTAINERS_DISABLE_PRINT
 #define IMPLEMENT_STACK_FN_PRINT(STACK) \
 void STACK ## _print(STACK * stack) \
-{
-	(void)(stack);
+{ \
+	(void)(list); \
 }
 #else
 #define IMPLEMENT_STACK_FN_PRINT(STACK) \

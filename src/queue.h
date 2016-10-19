@@ -180,8 +180,8 @@ ValueType QUEUE ## _head(QUEUE * queue) \
 #ifdef CCONTAINERS_DISABLE_PRINT
 #define IMPLEMENT_QUEUE_FN_PRINT(QUEUE) \
 void QUEUE ## _print(QUEUE * queue) \
-{
-	(void)(queue);
+{ \
+	(void)(list); \
 }
 #else
 #define IMPLEMENT_QUEUE_FN_PRINT(QUEUE) \
